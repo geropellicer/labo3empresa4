@@ -4,6 +4,7 @@ from empresa4.core import (
     get_clientes_importantes,
     get_productos_importantes,
     filter_clientes_importantes,
+    filter_productos_importantes
 )
 from empresa4.datasets import get_dataset
 
@@ -67,9 +68,9 @@ def test_filter_productos_importantes():
     filtered_df = filter_productos_importantes(df)
 
     # Check that the length of unique id_producto values is 10
-    assert len(filtered_df["id_producto"].unique()) == 10
+    assert len(filtered_df["product_id"].unique()) == 10
 
     # Check that all id_producto values are in get_productos_importantes
     assert all(
-        id_producto in get_productos_importantes() for id_producto in filtered_df["id_producto"].unique()
+        id_producto in get_productos_importantes() for id_producto in filtered_df["product_id"].unique()
     )
