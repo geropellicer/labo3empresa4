@@ -1,5 +1,6 @@
 import pandas as pd
 from empresa4.datasets import get_dataset, nombres_datasets
+from empresa4.core import get_clientes_importantes, get_productos_importantes
 
 
 def test_get_dataset_01_producto_estrella():
@@ -28,7 +29,9 @@ def test_get_dataset_01_productos_todos():
         "tn",
         "product_category",
     ]
-    expected_shape = (31243, len(expected_columns))
+    expected_rows = 46656
+    expected_shape = (expected_rows, len(expected_columns))
+    assert expected_rows % 36 == 0
     dataset_name = "01_productos_todos"
     df = get_dataset(dataset_name)
     assert isinstance(df, pd.DataFrame)
@@ -36,24 +39,27 @@ def test_get_dataset_01_productos_todos():
     assert df.shape == expected_shape
 
 
-def test_get_dataset_01_por_cliente():
+def test_get_dataset_01_120():
     expected_columns = [
         "periodo",
         "customer_id",
+        "product_id",
         "cust_request_qty",
         "cust_request_tn",
         "tn",
+        "product_category",
     ]
-    expected_shape = (16492, len(expected_columns))
-    dataset_name = "01_por_cliente"
+    expected_rows = 120 * 36
+    expected_shape = (expected_rows, len(expected_columns))
+    assert expected_rows % 36 == 0
+    dataset_name = "01_120"
     df = get_dataset(dataset_name)
     assert isinstance(df, pd.DataFrame)
     assert set(df.columns) == set(expected_columns)
     assert df.shape == expected_shape
 
-    # get the dataset 01_original, the the unique values of the column customer_id and compare with the unique values of the column customer_id of the dataset 01_por_cliente
-    df_original = get_dataset("01_original")
-    assert set(df_original["customer_id"].unique()) == set(df["customer_id"].unique())
+    assert set(df["customer_id"].unique()) == set(get_clientes_importantes())
+    assert set(df["product_id"].unique()) == set(get_productos_importantes())
 
 
 def test_get_dataset_01_original():
@@ -93,20 +99,113 @@ def test_get_dataset_raises_exception():
             == f"Dataset not found. Usar uno de los siguientes: {nombres_datasets}"
         )
 
+def test_get_dataset_02_producto_estrella():
+    expected_columns = [
+        "periodo",
+        "product_id",
+        "cust_request_qty",
+        "cust_request_tn",
+        "tn",
+        "product_category",
+        "cat2",
+        "sku_size",
+        "plan_precios_cuidados"
+    ]
+    expected_shape = (36, len(expected_columns))
+    dataset_name = "02_producto_estrella"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    assert set(df.columns) == set(expected_columns)
+    assert df.shape == expected_shape
+
+
+def test_get_dataset_02_productos_todos():
+    expected_columns = [
+        "periodo",
+        "product_id",
+        "cust_request_qty",
+        "cust_request_tn",
+        "tn",
+        "product_category",
+        "cat2",
+        "sku_size",
+        "plan_precios_cuidados"
+    ]
+    expected_rows = 46656
+    expected_shape = (expected_rows, len(expected_columns))
+    assert expected_rows % 36 == 0
+    dataset_name = "02_productos_todos"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    assert set(df.columns) == set(expected_columns)
+    assert df.shape == expected_shape
+
+
+def test_get_dataset_02_120():
+    expected_columns = [
+        "periodo",
+        "customer_id",
+        "product_id",
+        "cust_request_qty",
+        "cust_request_tn",
+        "tn",
+        "product_category",
+        "cat2",
+        "sku_size",
+        "plan_precios_cuidados"
+    ]
+    expected_rows = 120 * 36
+    expected_shape = (expected_rows, len(expected_columns))
+    assert expected_rows % 36 == 0
+    dataset_name = "02_120"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    assert set(df.columns) == set(expected_columns)
+    assert df.shape == expected_shape
+
+    assert set(df["customer_id"].unique()) == set(get_clientes_importantes())
+    assert set(df["product_id"].unique()) == set(get_productos_importantes())
+
+
+def test_get_dataset_02_original():
+    expected_columns = [
+        "periodo",
+        "customer_id",
+        "product_id",
+        "cust_request_qty",
+        "cust_request_tn",
+        "tn",
+        "plan_precios_cuidados"
+    ]
+    expected_shape = (2945818, len(expected_columns))
+    dataset_name = "02_original"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    assert set(df.columns) == set(expected_columns)
+    assert df.shape == expected_shape
+
+
 
 # test that each of the columns "cust_request_qty", "cust_request_tn" and "tn" sums the same in each of the datasets 01_por_cliente, 01_productos_todos and 01_original
 def test_columns_sum():
-    datasets = ["01_original", "01_por_cliente", "01_productos_todos"] 
+    datasets = ["01_original", "01_productos_todos", "01_120", "02_original", "02_productos_todos", "02_120"] 
     columns = ["cust_request_qty", "cust_request_tn", "tn"]
     dfs = [get_dataset(dataset) for dataset in datasets]
 
     #597 1233 36
-    assert dfs[1]["customer_id"].nunique() == 597
     assert dfs[0]["product_id"].nunique() == 1233
-    assert dfs[2]["product_id"].nunique() == 1233
+    assert dfs[1]["product_id"].nunique() == 1296
+    
+    assert dfs[3]["product_id"].nunique() == 1233
+    assert dfs[4]["product_id"].nunique() == 1296
+
     assert dfs[0]["periodo"].nunique() == 36
     assert dfs[1]["periodo"].nunique() == 36
     assert dfs[2]["periodo"].nunique() == 36
+    assert dfs[3]["periodo"].nunique() == 36
+    assert dfs[4]["periodo"].nunique() == 36
+    assert dfs[5]["periodo"].nunique() == 36
+
 
 
     # 6329834.0 1353074.0208099994 1324988.5884099994
@@ -115,5 +214,29 @@ def test_columns_sum():
         assert (
             round(dfs[0][column].sum(), 2)
             == round(dfs[1][column].sum(), 2)
+            
+            == round(dfs[3][column].sum(), 2)
+            == round(dfs[4][column].sum(), 2)
+        )
+
+        filtered_df = dfs[0][(dfs[0]["product_id"].isin(get_productos_importantes()))&(dfs[0]["customer_id"].isin(get_clientes_importantes()))]
+        assert (
+            round(filtered_df[column].sum(), 2)
             == round(dfs[2][column].sum(), 2)
         )
+        filtered_df_2 = dfs[3][(dfs[3]["product_id"].isin(get_productos_importantes()))&(dfs[3]["customer_id"].isin(get_clientes_importantes()))]
+        assert (
+            round(filtered_df_2[column].sum(), 2)
+            == round(dfs[5][column].sum(), 2)
+        )
+
+
+def test_get_dataset_02_precios_cuidados():
+    df = get_dataset("02_precios_cuidados")
+    df_or = get_dataset("02_original")
+    # get datasates[3] and filter out rows where plan_precios_cuidados=1
+    df_or_ppc = df_or[df_or["plan_precios_cuidados"]==1]
+    # get each unique pair of product_id and periodo
+    df_or_ppc = df_or_ppc[["product_id", "periodo"]].drop_duplicates()
+    # assert that each unique pair of product_id and periodo in df_or_ppc exists in 02_precios_cuidados
+    assert df_or_ppc.merge(df, on=["product_id", "periodo"]).shape[0] == df_or_ppc.shape[0]
