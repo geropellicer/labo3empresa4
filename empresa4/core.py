@@ -38,7 +38,7 @@ def get_productos_importantes():
 
 
 def filter_productos_importantes(df):
-    return df[df["id_producto"].isin(get_productos_importantes())]
+    return df[df["product_id"].isin(get_productos_importantes())]
 
 def filter_clientes_importantes(df):
     return df[df["customer_id"].isin(get_clientes_importantes())]
