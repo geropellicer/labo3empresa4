@@ -14,5 +14,9 @@ dist
 dist/
 dist/*
 */__pycache__
+*/__pycache__/
+*/__pycache__/*
 *.csv
 *.txt.gz
+*.txt
+*.pyc
