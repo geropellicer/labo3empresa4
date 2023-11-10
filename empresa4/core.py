@@ -1,5 +1,7 @@
 from math import radians, cos, sin, asin, sqrt
 from typing import List
+import pandas as pd
+from .datasets import get_dataset
 
 
 def calculate_error(predicted: List, real_values: List):
@@ -14,6 +16,20 @@ def calculate_error(predicted: List, real_values: List):
     for i in range(len(predicted)):
         error += abs(predicted[i] - real_values[i])
     return error / real_sum
+
+
+def calculate_error_2(df: pd.DataFrame, periodo: int):
+    if "product_id" not  in df.columns or "prediction" not in df.columns:
+        raise ValueError("df must have 'product_id' and 'prediction' columns")
+    
+    if len(df["product_id"].unique().tolist()) != len(df["product_id"].tolist()):
+        raise ValueError("df must have unique product_id values")   
+
+    orig = get_dataset("02_productos_todos")
+    data_to_compare = orig[(orig["periodo"] == periodo) & (orig["product_id"].isin(df["product_id"].unique()))]
+    # merge "tn" column of data_to_compare with df by product_id
+    merged = pd.merge(df, data_to_compare[["product_id", "tn"]], on="product_id", how="inner", validate="one_to_one")
+    return calculate_error(merged["prediction"].to_list(), merged["tn"].to_list())
 
 
 def get_clientes_importantes():
