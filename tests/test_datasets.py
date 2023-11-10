@@ -240,3 +240,16 @@ def test_get_dataset_02_precios_cuidados():
     df_or_ppc = df_or_ppc[["product_id", "periodo"]].drop_duplicates()
     # assert that each unique pair of product_id and periodo in df_or_ppc exists in 02_precios_cuidados
     assert df_or_ppc.merge(df, on=["product_id", "periodo"]).shape[0] == df_or_ppc.shape[0]
+
+
+def test_get_dataset_02_productos_todos_anti_leak():
+    df = get_dataset("02_productos_todos_anti_leak")
+    # assert that the unique periodo values are 26 and that all are less than 201903
+    assert df["periodo"].nunique() == 26
+    assert all(df["periodo"] < 201903)
+
+def test_get_dataset_02_120_anti_leak():
+    df = get_dataset("02_120_anti_leak")
+    # assert that the unique periodo values are 26 and that all are less than 201903
+    assert df["periodo"].nunique() == 26
+    assert all(df["periodo"] < 201903)
