@@ -6,6 +6,13 @@ nombres_datasets = [
     "01_producto_estrella",
     "01_productos_todos",
     "01_por_cliente",
+    "01_120",
+    "02_original",
+    "02_producto_estrella",
+    "02_productos_todos",
+    "02_por_cliente",
+    "02_precios_cuidados",
+    "02_120",
     "maestro_productos",
 ]
 
@@ -32,14 +39,39 @@ def get_dataset(dataset_name):
             "empresa4", "datasets/tb_sellout_01_productos_todos.csv"
         )
 
-    elif dataset_name == "01_por_cliente":
-        filepath = pkg_resources.resource_filename(
-            "empresa4", "datasets/tb_sellout_01_por_cliente.csv"
-        )
-
     elif dataset_name == "01_original":
         filepath = pkg_resources.resource_filename(
             "empresa4", "datasets/tb_sellout_01_original.csv"
+        )
+
+    elif dataset_name == "01_120":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_01_120.csv"
+        )
+
+    elif dataset_name == "02_producto_estrella":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_producto_estrella.csv"
+        )
+
+    elif dataset_name == "02_productos_todos":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_productos_todos.csv"
+        )
+
+    elif dataset_name == "02_original":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_original.csv"
+        )
+
+    elif dataset_name == "02_precios_cuidados":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_precios_cuidados.csv"
+        )
+
+    elif dataset_name == "02_120":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_120.csv"
         )
 
     elif dataset_name == "maestro_productos":
