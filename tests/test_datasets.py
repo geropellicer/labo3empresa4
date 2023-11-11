@@ -253,3 +253,15 @@ def test_get_dataset_02_120_anti_leak():
     # assert that the unique periodo values are 26 and that all are less than 201903
     assert df["periodo"].nunique() == 26
     assert all(df["periodo"] < 201903)
+
+def test_get_dataset_02_stocks_productos_todos():
+    dataset_name = "02_stocks_productos_todos"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+
+def test_get_dataset_02_stocks_anti_leak():
+    dataset_name = "02_stocks_anti_leak"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+
+
