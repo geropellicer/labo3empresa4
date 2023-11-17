@@ -265,3 +265,22 @@ def test_get_dataset_02_stocks_anti_leak():
     assert isinstance(df, pd.DataFrame)
 
 
+def test_get_dataset_02_productos_todos_con_FE_04():
+    dataset_name = "02_productos_todos_anti_leak_con_FE_04"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    largo = len(df)
+    ancho = len(df.columns)
+    assert ancho == 53
+    assert largo % 26 == 0
+    assert largo // 26 == 1296
+
+def test_get_dataset_02_productos_todos_con_FE_06():
+    dataset_name = "02_productos_todos_anti_leak_con_FE_06"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+    largo = len(df)
+    ancho = len(df.columns)
+    assert ancho > 53
+    assert largo % 26 == 0
+    assert largo // 26 == 1296
