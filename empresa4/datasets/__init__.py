@@ -19,7 +19,9 @@ nombres_datasets = [
     "02_stocks_productos_todos",
     "02_stocks_anti_leak",
     "02_productos_todos_anti_leak_con_FE_04",
-    "02_productos_todos_anti_leak_con_FE_06"
+    "02_productos_todos_anti_leak_con_FE_06",
+    "02_productos_desglosado_crudo",
+    "02_productos_desglosado",
 ]
 
 
@@ -104,7 +106,7 @@ def get_dataset(dataset_name):
         filepath = pkg_resources.resource_filename(
             "empresa4", "datasets/tb_stocks_02_productos_todos_anti_leak.csv"
         )
-    
+
     elif dataset_name == "02_productos_todos_anti_leak_con_FE_04":
         filepath = pkg_resources.resource_filename(
             "empresa4", "datasets/tb_sellout_02_productos_todos_con_FE_04.csv"
@@ -113,6 +115,16 @@ def get_dataset(dataset_name):
     elif dataset_name == "02_productos_todos_anti_leak_con_FE_06":
         filepath = pkg_resources.resource_filename(
             "empresa4", "datasets/tb_sellout_02_productos_todos_con_FE_06.csv"
+        )
+
+    elif dataset_name == "02_productos_desglosado_crudo":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_desglosado_crudo.csv"
+        )
+
+    elif dataset_name == "02_productos_desglosado":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/tb_sellout_02_desglosado.csv"
         )
 
     df = pd.read_csv(filepath)

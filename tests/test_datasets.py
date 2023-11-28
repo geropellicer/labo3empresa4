@@ -284,3 +284,38 @@ def test_get_dataset_02_productos_todos_con_FE_06():
     assert ancho > 53
     assert largo % 26 == 0
     assert largo // 26 == 1296
+
+def test_get_dataset_02_desglosado_crudo():
+    dataset_name = "02_productos_desglosado_crudo"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+   
+    # check that there are 36 unique values in column "periodo"
+    assert df["periodo"].nunique() == 36
+
+    # check that there are 1233 unique values in column "product_id"
+    assert df["product_id"].nunique() == 1233
+
+    # check that there are 595 unique values in column "customer_id"
+    assert df["customer_id"].nunique() == 597
+
+def test_get_dataset_02_desglosado():
+    dataset_name = "02_productos_desglosado"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+   
+    # check that there are 36 unique values in column "periodo"
+    assert df["periodo"].nunique() == 36
+
+    # check that there are 1233 unique values in column "product_id"
+    assert df["product_id"].nunique() == 1233
+
+    # check that there are 595 unique values in column "customer_id"
+    assert df["customer_id"].nunique() == 597
+
+    # check that columns cat2, product_category, sku_size, brand and plan_precios_cuidados exist and have not null values
+    for col in ["cat2", "cat3", "product_category", "sku_size", "brand", "plan_precios_cuidados"]:
+        assert col in df.columns.to_list()
+        assert df[col].isnull().sum() == 0
+    
+    assert df.isna().sum().sum() == 0
