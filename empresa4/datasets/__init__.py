@@ -1,5 +1,7 @@
 import pkg_resources
 import pandas as pd
+import requests
+from io import StringIO
 
 nombres_datasets = [
     "01_original",
@@ -118,14 +120,20 @@ def get_dataset(dataset_name):
         )
 
     elif dataset_name == "02_productos_desglosado_crudo":
-        filepath = pkg_resources.resource_filename(
-            "empresa4", "datasets/tb_sellout_02_desglosado_crudo.csv"
-        )
+        url='https://drive.google.com/file/d/1J2PG_GFhnrBozlOM_2l-3Pf-ozVS5im0/view?usp=sharing'
+        file_id = url.split('/')[-2]
+        dwn_url='https://drive.usercontent.google.com/download?id=' + file_id + '&export=download&authuser=0&confirm=t&uuid=f992404f-61f6-425e-ac6b-a77dc85fe61c&at=APZUnTVb0aDSb6bxyr7RqdZ8zsVA:1701132960489'
+        url2 = requests.get(dwn_url).text
+        csv_raw = StringIO(url2)
+        return pd.read_csv(csv_raw)
 
     elif dataset_name == "02_productos_desglosado":
-        filepath = pkg_resources.resource_filename(
-            "empresa4", "datasets/tb_sellout_02_desglosado.csv"
-        )
+        url='https://drive.google.com/file/d/1xwJmomvqSsDARENHRdfI4EmIt6aXFX2x/view?usp=sharing'
+        file_id = url.split('/')[-2]
+        dwn_url='https://drive.usercontent.google.com/download?id=' + file_id + '&export=download&authuser=0&confirm=t&uuid=95f36248-0659-4956-adaa-bd1e0564383f&at=APZUnTX9peDngh8O7LsXKmRoDw12:1701132306870'
+        url2 = requests.get(dwn_url).text
+        csv_raw = StringIO(url2)
+        return pd.read_csv(csv_raw)
 
     df = pd.read_csv(filepath)
     return df
