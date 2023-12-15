@@ -319,3 +319,24 @@ def test_get_dataset_02_desglosado():
         assert df[col].isnull().sum() == 0
     
     assert df.isna().sum().sum() == 0
+
+def test_get_dataset_02_sellout_agrupado_por_cliente():
+    dataset_name = "02_sellout_agrupado_por_cliente"
+    df = get_dataset(dataset_name)
+    assert isinstance(df, pd.DataFrame)
+   
+    # check that there are 36 unique values in column "periodo"
+    assert df["periodo"].nunique() == 36
+
+    # check that there are 595 unique values in column "customer_id"
+    assert df["customer_id"].nunique() == 597
+
+    # check that it has all the rows
+    shape = df.shape
+    expected_rows = 36*597
+    expected_cols = 5
+    assert shape[0] == expected_rows
+    assert shape[1] == expected_cols
+    
+
+    assert df.isna().sum().sum() == 0

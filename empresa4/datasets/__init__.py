@@ -24,6 +24,7 @@ nombres_datasets = [
     "02_productos_todos_anti_leak_con_FE_06",
     "02_productos_desglosado_crudo",
     "02_productos_desglosado",
+    "02_sellout_agrupado_por_cliente",
 ]
 
 
@@ -134,6 +135,11 @@ def get_dataset(dataset_name):
         url2 = requests.get(dwn_url).text
         csv_raw = StringIO(url2)
         return pd.read_csv(csv_raw)
+    
+    elif dataset_name == "02_sellout_agrupado_por_cliente":
+        filepath = pkg_resources.resource_filename(
+            "empresa4", "datasets/02_sellout_agrupado_por_cliente.csv"
+        )
 
     df = pd.read_csv(filepath)
     return df
